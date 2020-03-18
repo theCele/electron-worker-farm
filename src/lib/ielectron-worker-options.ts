@@ -2,7 +2,7 @@ import { FarmOptions } from "worker-farm";
 
 export interface IWorkerRunOptions {
     method: string;
-    parameters: any [];
+    parameters?: any [];
 }
 
 export interface IWorkerLaunchOptions {

@@ -5,10 +5,12 @@ import { IWorkerLaunchOptions } from './ielectron-worker-options';
 
 export class ThreadRegister {
     static register(): void {
-        ipcMain.handle('electron-worker:register', (event: IpcMainInvokeEvent, options: IWorkerLaunchOptions) => {
-            let electronWorker = new ElectronWorkerService(options);
-            electronWorkers.push(electronWorker);
-            return electronWorker.channel;
-        });
+        if (ipcMain) {
+            ipcMain.handle('electron-worker:register', (event: IpcMainInvokeEvent, options: IWorkerLaunchOptions) => {
+                let electronWorker = new ElectronWorkerService(options);
+                electronWorkers.push(electronWorker);
+                return electronWorker.channel;
+            });
+        }
     }
 }

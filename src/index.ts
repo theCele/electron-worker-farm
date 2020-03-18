@@ -8,6 +8,8 @@ export { ElectronWorkerService } from './lib/electron-worker-service';
 export { IWorkerLaunchOptions, IWorkerRunOptions } from './lib/ielectron-worker-options';
 export { ElectronWorker } from './lib/electron-worker';
 
-app.on('ready', () => {
-    ThreadRegister.register();
-});
+if (app) {
+    app.on('ready', () => {
+        ThreadRegister.register();
+    });
+}

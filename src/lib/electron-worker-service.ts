@@ -27,15 +27,17 @@ export class ElectronWorkerService {
     }
 
     handle() {
-        ipcMain.handle(`${this.channel}:work`, async (_event, runOptions: IWorkerRunOptions): Promise<any> => {
-            this.runOptions = runOptions;
-            return this.work(this.runOptions);
-        });
-        ipcMain.handleOnce(`${this.channel}:end`, async () => {
-            workerFarm.end(this.workers);
-            ipcMain.removeHandler(`${this.channel}:work`);
-            return true;
-        });
+        if (ipcMain) {
+            ipcMain.handle(`${this.channel}:work`, async (_event, runOptions: IWorkerRunOptions): Promise<any> => {
+                this.runOptions = runOptions;
+                return this.work(this.runOptions);
+            });
+            ipcMain.handleOnce(`${this.channel}:end`, async () => {
+                workerFarm.end(this.workers);
+                ipcMain.removeHandler(`${this.channel}:work`);
+                return true;
+            });
+        }
     }
 
     async work(input: IWorkerRunOptions): Promise<any> {
