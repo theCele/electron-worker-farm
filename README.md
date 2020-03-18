@@ -12,14 +12,14 @@ npm install --save electron-worker-farm
 
 In you Electron start file (main.js) import
 ```bash
-import 'electron-thread';
+import 'electron-worker-farm';
 ```
 
 ## Example
 
 In you Electron start file (main.js) import
 ```bash
-import 'electron-thread';
+import 'electron-worker-farm';
 ```
 
 Given a file in renderer, child.worker.js:
