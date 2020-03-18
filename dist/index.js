@@ -9,7 +9,9 @@ var electron_worker_service_1 = require("./lib/electron-worker-service");
 exports.ElectronWorkerService = electron_worker_service_1.ElectronWorkerService;
 var electron_worker_1 = require("./lib/electron-worker");
 exports.ElectronWorker = electron_worker_1.ElectronWorker;
-electron_1.app.on('ready', () => {
-    electron_worker_register_1.ThreadRegister.register();
-});
+if (electron_1.app) {
+    electron_1.app.on('ready', () => {
+        electron_worker_register_1.ThreadRegister.register();
+    });
+}
 //# sourceMappingURL=index.js.map

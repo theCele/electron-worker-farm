@@ -1,6 +1,6 @@
 {
   "name": "electron-worker-farm",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Worker Farm wrapper for Electron apps",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -8,8 +8,7 @@
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
-    "publish": "tsc && npm pack && npm publish",
-    "start": "npm run build && electron ./dist/main.js"
+    "publish": "tsc && npm pack && npm publish"
   },
   "repository": "https://github.com/theCele/electron-worker-farm.git",
   "keywords": [

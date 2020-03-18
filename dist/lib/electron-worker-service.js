@@ -21,15 +21,17 @@ class ElectronWorkerService {
         return this._workers;
     }
     handle() {
-        electron_1.ipcMain.handle(`${this.channel}:work`, async (_event, runOptions) => {
-            this.runOptions = runOptions;
-            return this.work(this.runOptions);
-        });
-        electron_1.ipcMain.handleOnce(`${this.channel}:end`, async () => {
-            workerFarm.end(this.workers);
-            electron_1.ipcMain.removeHandler(`${this.channel}:work`);
-            return true;
-        });
+        if (electron_1.ipcMain) {
+            electron_1.ipcMain.handle(`${this.channel}:work`, async (_event, runOptions) => {
+                this.runOptions = runOptions;
+                return this.work(this.runOptions);
+            });
+            electron_1.ipcMain.handleOnce(`${this.channel}:end`, async () => {
+                workerFarm.end(this.workers);
+                electron_1.ipcMain.removeHandler(`${this.channel}:work`);
+                return true;
+            });
+        }
     }
     async work(input) {
         return new Promise((resolve, reject) => {
