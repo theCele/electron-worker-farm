@@ -1,6 +1,6 @@
 {
   "name": "electron-worker-farm",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Worker Farm wrapper for Electron apps",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
