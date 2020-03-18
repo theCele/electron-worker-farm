@@ -1,22 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const electron_1 = require("electron");
-class ElectronThread {
+class ElectronWorker {
     constructor(options) {
         this.options = options;
     }
     run(options) {
         return new Promise((resolve, reject) => {
-            electron_1.ipcRenderer.invoke('thread:register', this.options)
+            electron_1.ipcRenderer.invoke('electron-worker:register', this.options)
                 .then((channel) => {
                 this.channel = channel;
                 electron_1.ipcRenderer.invoke(`${channel}:work`, options)
-                    .then((channel) => {
-                    electron_1.ipcRenderer.invoke(`${channel}:return`)
-                        .then(result => {
-                        resolve(result);
-                    })
-                        .catch(err => reject(err));
+                    .then((result) => {
+                    resolve(result);
                 })
                     .catch(err => reject(err));
             })
@@ -35,5 +31,5 @@ class ElectronThread {
         });
     }
 }
-exports.ElectronThread = ElectronThread;
-//# sourceMappingURL=electron-thread.js.map
+exports.ElectronWorker = ElectronWorker;
+//# sourceMappingURL=electron-worker.js.map

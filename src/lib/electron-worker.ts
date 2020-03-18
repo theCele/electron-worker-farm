@@ -1,25 +1,21 @@
 import { ipcRenderer } from 'electron';
-import { IThreadLaunchOptions, IThreadRunOptions } from './ielectron-thread-options';
+import { IWorkerLaunchOptions, IWorkerRunOptions } from './ielectron-worker-options';
 
-export class ElectronThread {
-    private options: IThreadLaunchOptions;
+export class ElectronWorker {
+    private options: IWorkerLaunchOptions;
     private channel: string;
-    constructor(options: IThreadLaunchOptions) {
+    constructor(options: IWorkerLaunchOptions) {
         this.options = options;
     }
 
-    run<T>(options: IThreadRunOptions): Promise<T> {
+    run<T>(options: IWorkerRunOptions): Promise<T> {
         return new Promise((resolve, reject) => {
-            ipcRenderer.invoke('thread:register', this.options)
+            ipcRenderer.invoke('electron-worker:register', this.options)
             .then((channel: string) => {
                 this.channel = channel;
                 ipcRenderer.invoke(`${channel}:work`, options)
-                .then((channel: string) => {
-                    ipcRenderer.invoke(`${channel}:return`)
-                    .then(result => {
-                        resolve(result);
-                    })
-                    .catch(err => reject(err));
+                .then((result: T) => {
+                    resolve(result);
                 })
                 .catch(err => reject(err));
             })

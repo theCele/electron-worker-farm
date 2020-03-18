@@ -8,10 +8,10 @@ dist/main.js
 dist/main.js.map
 dist/main.d.ts
 
-src/renderer.thread.ts
-dist/renderer.thread.js
-dist/renderer.thread.js.map
-dist/renderer.thread.d.ts
+src/renderer.worker.ts
+dist/renderer.worker.js
+dist/renderer.worker.js.map
+dist/renderer.worker.d.ts
 
 src/renderer.ts
 dist/renderer.js

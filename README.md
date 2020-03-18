@@ -1,13 +1,13 @@
-# Electron Thread
+# Electron wrapper for Worker Farm
 
-**Electron workers using BrowserWindow headless window**
+**Create Electron workers using the awesome [Worker Farm](https://www.npmjs.com/package/worker-farm)**
 
-This package allows you to use multithreading in Electron. This type of multithreading allows you to use [NODE JS API](https://nodejs.org/docs/latest/api/) and [Electron API](https://www.electronjs.org/docs/api)
+Note: this package allows you to use multithreading in Electron. This type of multithreading allows you to use [NODE JS API](https://nodejs.org/docs/latest/api/). However none of Electron's built-in modules can be used in a multi-threaded environment.
 
 ## Install
 
 ```bash
-npm install --save electron-thread
+npm install --save electron-worker-farm
 ```
 
 In you Electron start file import
