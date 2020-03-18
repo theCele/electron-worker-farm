@@ -10,46 +10,43 @@ Note: this package allows you to use multithreading in Electron. This type of mu
 npm install --save electron-worker-farm
 ```
 
-In you Electron start file import
-main.js
+In you Electron start file (main.js) import
 ```bash
 import 'electron-thread';
 ```
 
 ## Example
 
-In you Electron start file import
-main.js
+In you Electron start file (main.js) import
 ```bash
 import 'electron-thread';
 ```
 
-Given a file in renderer, child.thread.js:
+Given a file in renderer, child.worker.js:
 
 ```bash
-# Import the ThreadExport class
-import { ThreadExport } from "electron-thread";
+import { execSync } from 'child_process';
 
-# Write your methods
-function getProcessId(paramOne, paramTwo) {
-    return `${paramOne}:${paramTwo} ${process.pid}`;
+export function getProcessId(inp: string, inp2: number, callback: Function) {
+    callback(null, `${inp}${inp2} BAR (${process.pid})`);
 }
 
-# Register your methods
-ThreadExport.export({
-    getProcessId: getProcessId
-});
+export function getSystemInfo(callback: Function) {
+    let result = execSync('systeminfo').toString();
+    callback(null, result);
+}
 ```
 
 And a renderer file where we call:
 
 ```bash
-# Import the ElectronThread class
-import { ElectronThread } from "electron-thread";
+# Import the ElectronWorker class
+import { ElectronWorker } from "./lib/electron-worker";
 
-# initialise using your relative path to child.thread.js and resolve the path with require.resolve()
-let electronThread = new ElectronThread({
-    module: require.resolve('./child.thread')
+# initialise using your relative path to child.worker.js and resolve the path with require.resolve()
+let electronWorker = new ElectronWorker({
+    module: require.resolve('./renderer.worker'),
+    methods: ['getProcessId', 'getSystemInfo']
 });
 
 let test = async () => {
@@ -58,7 +55,7 @@ let test = async () => {
         for (var i = 0; i < 100; i++) {
             let r = electronThread.run({
                 method: 'getProcessId',
-                parameters: ['#', i + 1]
+                parameters: ['#', i + 1] # maximum nuber of parameters is 0 - 4
             });
             promises.push(r);
         }
@@ -89,32 +86,32 @@ We'll get an output something like the following:
 "#:10 22132"
 ```
 
-Note: If you're using Linux Bash for Windows, [see this guide](https://www.howtogeek.com/261575/how-to-run-graphical-linux-desktop-applications-from-windows-10s-bash-shell/) or use `node` from the command prompt.
-
 ## API
 
-The module classe ElectronThread has two methods run(options) and end()
+The module classe ElectronWorker has two methods run(options) and end()
 
-Class ElectronThread
+Class ElectronWorker
 ```bash
-let thread = new ElectronThread({
+let thread = new ElectronWorker({
     module: require.resolve('relative path to the child thread')
+    methods: ['getProcessId', 'getSystemInfo']
 })
 ```
 
-ElectronThread.run(options) : Promise<any>. It launches the method and returns a promise
+ElectronWorker.run<<T>>(options) : Promise<<T>>. It launches the method and returns a promise
 ```bash
 let options = {
     method: 'someMethod', //method name from the exported from child thread
-    parameters: ['#', i + 1] // method parameters
+    parameters: ['#', i + 1] // method parameters from 0 - 4
 }
 thread.run(options)
 .then((result) => console.log(result))
 .catch((err) => console.log(err))
 ```
-ElectronThread.end() : Promise<void>. It ends all active processes
+ElectronWorker.end() : Promise<<void>>. It ends all active processes
+
+**For more information please have a look at [Worker Farm](https://www.npmjs.com/package/worker-farm)**
 
 ### Inspiration
 
 - [worker-farm](https://www.npmjs.com/package/worker-farm) - Worker Farm
-- [workerpool](https://www.npmjs.com/package/workerpool) - Workerpool
