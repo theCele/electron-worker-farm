@@ -2,9 +2,12 @@
 // be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
 
-import { ElectronWorker } from "./lib/electron-worker";
+import * as ewf from './index';
 
-let electronWorker = new ElectronWorker({
+let electronWorker = new ewf.ElectronWorker({
+    farmOptions: {
+        autoStart: false
+    },
     module: require.resolve('./renderer.worker'),
     methods: ['getProcessId', 'getSystemInfo']
 });

@@ -14,4 +14,12 @@ if (electron_1.app) {
         electron_worker_register_1.ThreadRegister.register();
     });
 }
+if (electron_1.ipcRenderer) {
+    electron_1.ipcRenderer.on('worker:console.log', (e, args) => {
+        console.log(args);
+    });
+    electron_1.ipcRenderer.on('worker:console.error', (e, args) => {
+        console.error(args);
+    });
+}
 //# sourceMappingURL=index.js.map

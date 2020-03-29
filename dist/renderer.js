@@ -3,8 +3,11 @@
 // be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
 Object.defineProperty(exports, "__esModule", { value: true });
-const electron_worker_1 = require("./lib/electron-worker");
-let electronWorker = new electron_worker_1.ElectronWorker({
+const ewf = require("./index");
+let electronWorker = new ewf.ElectronWorker({
+    farmOptions: {
+        autoStart: false
+    },
     module: require.resolve('./renderer.worker'),
     methods: ['getProcessId', 'getSystemInfo']
 });
