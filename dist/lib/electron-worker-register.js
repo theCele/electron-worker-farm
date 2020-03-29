@@ -9,17 +9,20 @@ class ThreadRegister {
     static register() {
         if (electron_1.ipcMain) {
             electron_1.ipcMain.handle('electron-worker:register', (event, options) => {
-                var _a;
-                // set child console listener
                 if (!options.farmOptions) {
                     options.farmOptions = {};
                 }
                 ;
-                //if (!options.farmOptions.workerOptions) { options.farmOptions.workerOptions = {} }
-                (_a = options.farmOptions.workerOptions) === null || _a === void 0 ? void 0 : _a.stdio;
-                options.farmOptions.workerOptions = {
-                    stdio: 'pipe'
-                };
+                // set stdio to pipe
+                if (options.farmOptions.workerOptions) {
+                    options.farmOptions.workerOptions.stdio = 'pipe';
+                }
+                else {
+                    options.farmOptions.workerOptions = {
+                        stdio: 'pipe'
+                    };
+                }
+                // send stdio data to caller window
                 options.farmOptions.onChild = (child) => {
                     child.stdout.on('data', (e) => {
                         event.sender.send('worker:console.log', e.toString());
@@ -27,10 +30,8 @@ class ThreadRegister {
                     child.stderr.on('data', (e) => {
                         event.sender.send('worker:console.error', e.toString());
                     });
-                    // child.on('message', (args) => {
-                    //     event.sender.send('worker:console', args);
-                    // });
                 };
+                // create worker
                 let electronWorker = new electron_worker_service_1.ElectronWorkerService(options);
                 index_1.electronWorkers.push(electronWorker);
                 return electronWorker.channel;
