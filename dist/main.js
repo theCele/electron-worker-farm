@@ -5,6 +5,7 @@ require("./index");
 const path = require("path");
 let mainWindow;
 function createWindow() {
+    console.log(`main-process pid: ${process.pid}`);
     // Create the browser window.
     mainWindow = new electron_1.BrowserWindow({
         height: 600,

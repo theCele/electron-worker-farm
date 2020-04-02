@@ -5,6 +5,7 @@ import * as path from "path";
 let mainWindow: Electron.BrowserWindow | null;
 
 function createWindow() {
+  console.log(`main-process pid: ${process.pid}`);
   // Create the browser window.
   mainWindow = new BrowserWindow({
     height: 600,
