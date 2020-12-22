@@ -6,11 +6,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const workerFarm = require("./index");
 let workers = workerFarm(require.resolve('./renderer.worker'), ['getProcessId', 'getSystemInfo']);
 let ret = 0;
-for (var i = 0; i < 10; i++) {
+let start = new Date();
+console.log(start.getMilliseconds());
+for (var i = 0; i < 50; i++) {
     workers.getProcessId('#', i, function (err, outp) {
         console.log(outp);
-        if (++ret == 10)
+        if (++ret == 10) {
             workerFarm.end(workers);
+            console.log((new Date).getMilliseconds());
+        }
     });
 }
 //# sourceMappingURL=renderer.js.map
